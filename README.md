@@ -11,10 +11,11 @@
 <li>Converting the API response into a pandas DataFrame</li>
 <li>Playtime converted to hours and last played time converted to dates</li>
 <li>Top 10 most played games</li>
+<li>Count and share of never launched games</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Remaining playtime analysis (never launched games, games not launched for the longest time)</li>
+<li>Remaining playtime analysis (games not launched for the longest time)</li>
 <li>Game genres from the Steam Store API</li>
 <li>Charts with matplotlib and seaborn</li>
 <li>Caching API results to a local file</li>
@@ -133,7 +134,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <li>☑ Store credentials in <code>.env</code></li>
 <li>☑ Convert playtime to hours</li>
 <li>☑ Top 10 most played games</li>
-<li>☐ Count and share of never launched games</li>
+<li>☑ Count and share of never launched games</li>
 <li>☐ Find games not launched for the longest time</li>
 </ul>
 <h3>Version 2 - Genres and Charts</h3>
