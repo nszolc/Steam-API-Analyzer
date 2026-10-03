@@ -9,10 +9,12 @@
 <li>Fetching the full list of owned games from the Steam Web API</li>
 <li>API key and SteamID kept in a <code>.env</code> file, outside the repository</li>
 <li>Converting the API response into a pandas DataFrame</li>
+<li>Playtime converted to hours and last played time converted to dates</li>
+<li>Top 10 most played games</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Playtime analysis (most played games, never launched games, last played dates)</li>
+<li>Remaining playtime analysis (never launched games, games not launched for the longest time)</li>
 <li>Game genres from the Steam Store API</li>
 <li>Charts with matplotlib and seaborn</li>
 <li>Caching API results to a local file</li>
@@ -102,7 +104,7 @@ games = get_owned_games()
 <p>Fields used in the analysis:</p>
 <pre><code>appid               - unique game identifier
 name                - game title
-playtime_forever    - total playtime
+playtime_forever    - total playtime (in minutes)
 rtime_last_played   - last launch time (Unix timestamp)
 </code></pre>
 <h3>Steam Store API</h3>
@@ -129,8 +131,8 @@ rtime_last_played   - last launch time (Unix timestamp)
 <ul>
 <li>☑ Fetch owned games from the Steam Web API</li>
 <li>☑ Store credentials in <code>.env</code></li>
-<li>☐ Convert playtime to hours</li>
-<li>☐ Top 10 most played games</li>
+<li>☑ Convert playtime to hours</li>
+<li>☑ Top 10 most played games</li>
 <li>☐ Count and share of never launched games</li>
 <li>☐ Find games not launched for the longest time</li>
 </ul>
