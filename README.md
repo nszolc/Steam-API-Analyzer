@@ -12,10 +12,10 @@
 <li>Playtime converted to hours and last played time converted to dates</li>
 <li>Top 10 most played games</li>
 <li>Count and share of never launched games</li>
+<li>Games not launched for the longest time, with days since last launch</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Remaining playtime analysis (games not launched for the longest time)</li>
 <li>Game genres from the Steam Store API</li>
 <li>Charts with matplotlib and seaborn</li>
 <li>Caching API results to a local file</li>
@@ -26,11 +26,11 @@
 <h3>Library Overview</h3>
 <p>Fetches all games owned by the account, including titles, using the <code>IPlayerService/GetOwnedGames</code> endpoint with <code>include_appinfo=1</code>.</p>
 <h3>Playtime Analysis</h3>
-<p>Planned statistics:</p>
+<p>Statistics:</p>
 <ul>
 <li>total playtime converted to hours</li>
 <li>top 10 most played games</li>
-<li>games not launched for the longest time</li>
+<li>games not launched for the longest time, with days since last launch</li>
 </ul>
 <h3>Pile of Shame</h3>
 <p>Shows how many owned games have never been launched and what share of the library they make up.</p>
@@ -135,7 +135,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <li>☑ Convert playtime to hours</li>
 <li>☑ Top 10 most played games</li>
 <li>☑ Count and share of never launched games</li>
-<li>☐ Find games not launched for the longest time</li>
+<li>☑ Games not launched for the longest time</li>
 </ul>
 <h3>Version 2 - Genres and Charts</h3>
 <ul>
