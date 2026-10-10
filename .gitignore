@@ -12,3 +12,6 @@ wheels/
 data/
 # Jupyter
 .ipynb_checkpoints/
+
+# Prywatne notatki do nauki
+notatki/
