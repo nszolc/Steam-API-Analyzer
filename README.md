@@ -139,7 +139,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 </ul>
 <h3>Version 2 - Genres and Charts</h3>
 <ul>
-<li>☐ Fetch genres from the Steam Store API</li>
+<li>☑ Fetch genres from the Steam Store API</li>
 <li>☐ Cache API results to a local file</li>
 <li>☐ Merge genres with library data</li>
 <li>☐ Playtime statistics by genre</li>

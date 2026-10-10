@@ -8,6 +8,7 @@ import requests
 from dotenv import load_dotenv
 
 OWNED_GAMES_URL = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/"
+APP_DETAILS_URL = "https://store.steampowered.com/api/appdetails"
 
 
 def load_credentials() -> tuple[str, str]:
@@ -46,3 +47,18 @@ def get_owned_games() -> pd.DataFrame:
     """Fetch owned games using credentials from .env and return them as a DataFrame."""
     api_key, steam_id = load_credentials()
     return pd.DataFrame(fetch_owned_games(api_key, steam_id))
+
+
+def fetch_genres(appid: int, timeout: float = 10) -> list[str]:
+    """Return genre names for one game from the Steam Store API."""
+    params = {"appids": appid}
+    response = requests.get(APP_DETAILS_URL, params=params, timeout=timeout)
+    response.raise_for_status()
+
+    app: dict[str, Any] = response.json().get(str(appid), {})
+    # Apps no longer in the store return {"success": false} without a "data" key.
+    if not app.get("success"):
+        return []
+
+    genres: list[dict[str, str]] = app["data"].get("genres", [])
+    return [g["description"] for g in genres]
