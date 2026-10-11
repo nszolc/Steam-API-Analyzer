@@ -13,12 +13,12 @@
 <li>Top 10 most played games</li>
 <li>Count and share of never launched games</li>
 <li>Games not launched for the longest time, with days since last launch</li>
+<li>Game genres from the Steam Store API, cached in a local JSON file</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Game genres from the Steam Store API</li>
+<li>Merging genres with library data and playtime statistics by genre</li>
 <li>Charts with matplotlib and seaborn</li>
-<li>Caching API results to a local file</li>
 <li>Interactive dashboard in Streamlit</li>
 </ul>
 <hr />
@@ -35,7 +35,7 @@
 <h3>Pile of Shame</h3>
 <p>Shows how many owned games have never been launched and what share of the library they make up.</p>
 <h3>Genres</h3>
-<p>Planned: genres for each game will be retrieved from the Steam Store API and joined with the library data, which allows:</p>
+<p>Genres for each game are retrieved from the Steam Store API and cached locally, so only games missing from the cache are requested. Planned: joining them with the library data, which allows:</p>
 <ul>
 <li>total playtime per genre</li>
 <li>most common genres in the library</li>
@@ -83,14 +83,18 @@ STEAM_ID=your_steamid64
 <pre><code class="language-bash">uv run jupyter lab
 </code></pre>
 <p>The notebook only handles analysis; the API code lives in the <code>steam_api_analyzer</code> package, so it can be reused later by the dashboard:</p>
-<pre><code class="language-python">from steam_api_analyzer import get_owned_games
+<pre><code class="language-python">from pathlib import Path
+
+from steam_api_analyzer import get_genres, get_owned_games
 
 games = get_owned_games()
+genres = get_genres(games["appid"], Path("../data/genres_cache.json"))
 </code></pre>
 <p>Two details worth knowing:</p>
 <ul>
 <li><code>load_dotenv()</code> looks for <code>.env</code> starting from the current working directory, so Jupyter should be started from the project root.</li>
 <li>If <em>Game details</em> are private, the API still returns <code>200 OK</code>, but with an empty <code>response</code> object, so <code>fetch_owned_games()</code> checks for a missing <code>games</code> list and raises a clear error instead of failing later.</li>
+<li>The first <code>get_genres()</code> call sends one Store API request per game, which takes a while for a large library. The cache is saved after every request, so an interrupted run resumes where it stopped. Delete <code>data/genres_cache.json</code> to fetch all genres again.</li>
 </ul>
 <hr />
 <h2>Configuration</h2>
@@ -109,7 +113,13 @@ playtime_forever    - total playtime (in minutes)
 rtime_last_played   - last launch time (Unix timestamp)
 </code></pre>
 <h3>Steam Store API</h3>
-<p>Planned: <code>store.steampowered.com/api/appdetails</code> for genres. This endpoint is undocumented and rate-limited, which is the main reason for caching its results locally instead of calling it on every run.</p>
+<p>Endpoint: <code>store.steampowered.com/api/appdetails</code>, used for genres. This endpoint is undocumented and rate-limited, which is the main reason for caching its results locally instead of calling it on every run.</p>
+<p>Apps that are no longer in the store return <code>{"success": false}</code> and get an empty genre list, as do apps without a <code>genres</code> field (e.g. some tools and DLC).</p>
+<p>Cache format (<code>data/genres_cache.json</code>), with appids as string keys because JSON keys must be strings:</p>
+<pre><code class="language-json">{
+  "730": ["Action", "Free To Play"]
+}
+</code></pre>
 <hr />
 <h2>Project Structure</h2>
 <pre><code>Steam-API-Analyzer
@@ -117,10 +127,10 @@ rtime_last_played   - last launch time (Unix timestamp)
 ├── src
 │   └── steam_api_analyzer
 │       ├── __init__.py
-│       └── api.py             (Steam Web API client)
+│       └── api.py             (Steam Web API and Store API client)
 ├── notebooks
 │   └── steam_analysis.ipynb   (data analysis)
-├── data                       (cached API results, gitignored - planned)
+├── data                       (cached API results, gitignored)
 ├── .env.example               (required environment variables)
 ├── .gitattributes             (nbstripout filter for notebooks)
 ├── pyproject.toml             (project, dependencies, Ruff and mypy config)
@@ -140,7 +150,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <h3>Version 2 - Genres and Charts</h3>
 <ul>
 <li>☑ Fetch genres from the Steam Store API</li>
-<li>☐ Cache API results to a local file</li>
+<li>☑ Cache API results to a local file</li>
 <li>☐ Merge genres with library data</li>
 <li>☐ Playtime statistics by genre</li>
 <li>☐ Charts with matplotlib and seaborn</li>
