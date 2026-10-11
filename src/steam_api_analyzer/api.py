@@ -1,6 +1,8 @@
 """Client for the Steam Web API."""
 
+import json
 import os
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -62,3 +64,19 @@ def fetch_genres(appid: int, timeout: float = 10) -> list[str]:
 
     genres: list[dict[str, str]] = app["data"].get("genres", [])
     return [g["description"] for g in genres]
+
+
+def get_genres(appids, cache_path: Path) -> dict[str, list[str]]:
+    """Return genres for each appid, using a JSON file as a cache."""
+    if cache_path.exists():
+        cache = json.loads(cache_path.read_text())
+    else:
+        cache: dict = {}
+
+    for appid in appids:
+        key = str(appid)
+        if key not in cache:
+            cache[key] = fetch_genres(appid)
+            # Save after every request so a failure halfway keeps what was already fetched.
+            cache_path.write_text(json.dumps(cache, indent=2))
+    return cache
