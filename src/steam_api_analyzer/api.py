@@ -66,7 +66,7 @@ def fetch_genres(appid: int, timeout: float = 10) -> list[str]:
     return [g["description"] for g in genres]
 
 
-def get_genres(appids, cache_path: Path) -> dict[str, list[str]]:
+def get_genres(appids, cache_path: Path) -> dict[int, list[str]]:
     """Return genres for each appid, using a JSON file as a cache."""
     if cache_path.exists():
         cache = json.loads(cache_path.read_text())
@@ -79,4 +79,5 @@ def get_genres(appids, cache_path: Path) -> dict[str, list[str]]:
             cache[key] = fetch_genres(appid)
             # Save after every request so a failure halfway keeps what was already fetched.
             cache_path.write_text(json.dumps(cache, indent=2))
-    return cache
+    genres_int = {int(key): value for key, value in cache.items()}
+    return genres_int
