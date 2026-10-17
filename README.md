@@ -13,11 +13,11 @@
 <li>Top 10 most played games</li>
 <li>Count and share of never launched games</li>
 <li>Games not launched for the longest time, with days since last launch</li>
-<li>Game genres from the Steam Store API, cached in a local JSON file</li>
+<li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Merging genres with library data and playtime statistics by genre</li>
+<li>Playtime statistics by genre</li>
 <li>Charts with matplotlib and seaborn</li>
 <li>Interactive dashboard in Streamlit</li>
 </ul>
@@ -35,7 +35,7 @@
 <h3>Pile of Shame</h3>
 <p>Shows how many owned games have never been launched and what share of the library they make up.</p>
 <h3>Genres</h3>
-<p>Genres for each game are retrieved from the Steam Store API and cached locally, so only games missing from the cache are requested. Planned: joining them with the library data, which allows:</p>
+<p>Genres for each game are retrieved from the Steam Store API, cached locally (only games missing from the cache are requested) and added to the library table as a <code>genres</code> column. Planned statistics:</p>
 <ul>
 <li>total playtime per genre</li>
 <li>most common genres in the library</li>
@@ -114,7 +114,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 </code></pre>
 <h3>Steam Store API</h3>
 <p>Endpoint: <code>store.steampowered.com/api/appdetails</code>, used for genres. This endpoint is undocumented and rate-limited, which is the main reason for caching its results locally instead of calling it on every run.</p>
-<p>Apps that are no longer in the store return <code>{"success": false}</code> and get an empty genre list, as do apps without a <code>genres</code> field (e.g. some tools and DLC).</p>
+<p>Apps that are no longer in the store return <code>{"success": false}</code> and get an empty genre list, as do apps without a <code>genres</code> field (e.g. some tools and DLC). Empty results are requested again on the next run, so a temporary Store API failure does not stay in the cache.</p>
 <p>Cache format (<code>data/genres_cache.json</code>), with appids as string keys because JSON keys must be strings:</p>
 <pre><code class="language-json">{
   "730": ["Action", "Free To Play"]
@@ -151,7 +151,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <ul>
 <li>☑ Fetch genres from the Steam Store API</li>
 <li>☑ Cache API results to a local file</li>
-<li>☐ Merge genres with library data</li>
+<li>☑ Merge genres with library data</li>
 <li>☐ Playtime statistics by genre</li>
 <li>☐ Charts with matplotlib and seaborn</li>
 </ul>
