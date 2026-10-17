@@ -75,7 +75,8 @@ def get_genres(appids, cache_path: Path) -> dict[int, list[str]]:
 
     for appid in appids:
         key = str(appid)
-        if key not in cache:
+        # Empty results are fetched again, so a temporary Store API failure does not stick.
+        if key not in cache or not cache[key]:
             cache[key] = fetch_genres(appid)
             # Save after every request so a failure halfway keeps what was already fetched.
             cache_path.write_text(json.dumps(cache, indent=2))
