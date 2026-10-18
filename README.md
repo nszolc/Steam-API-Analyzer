@@ -15,10 +15,11 @@
 <li>Games not launched for the longest time, with days since last launch</li>
 <li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
 <li>Total playtime and number of games per genre</li>
+<li>Bar charts of the top 10 most played games and hours played by genre (matplotlib)</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Charts with matplotlib and seaborn</li>
+<li>More charts with matplotlib and seaborn</li>
 <li>Interactive dashboard in Streamlit</li>
 </ul>
 <hr />
