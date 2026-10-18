@@ -14,10 +14,10 @@
 <li>Count and share of never launched games</li>
 <li>Games not launched for the longest time, with days since last launch</li>
 <li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
+<li>Total playtime and number of games per genre</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>Playtime statistics by genre</li>
 <li>Charts with matplotlib and seaborn</li>
 <li>Interactive dashboard in Streamlit</li>
 </ul>
@@ -35,12 +35,13 @@
 <h3>Pile of Shame</h3>
 <p>Shows how many owned games have never been launched and what share of the library they make up.</p>
 <h3>Genres</h3>
-<p>Genres for each game are retrieved from the Steam Store API, cached locally (only games missing from the cache are requested) and added to the library table as a <code>genres</code> column. Planned statistics:</p>
+<p>Genres for each game are retrieved from the Steam Store API, cached locally (only games missing from the cache are requested) and added to the library table as a <code>genres</code> column. Statistics:</p>
 <ul>
 <li>total playtime per genre</li>
-<li>most common genres in the library</li>
-<li>genres with the highest share of unplayed games</li>
+<li>number of games per genre</li>
+<li>planned: genres with the highest share of unplayed games</li>
 </ul>
+<p>A game counts fully in each of its genres (one row per genre after <code>explode</code>), so per-genre hours add up to more than the total playtime. They are meant for comparing genres, not for summing.</p>
 <h3>Dashboard</h3>
 <p>Planned Streamlit dashboard with:</p>
 <ul>
@@ -152,7 +153,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <li>☑ Fetch genres from the Steam Store API</li>
 <li>☑ Cache API results to a local file</li>
 <li>☑ Merge genres with library data</li>
-<li>☐ Playtime statistics by genre</li>
+<li>☑ Playtime statistics by genre</li>
 <li>☐ Charts with matplotlib and seaborn</li>
 </ul>
 <h3>Version 3 - Dashboard</h3>
