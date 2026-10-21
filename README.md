@@ -15,7 +15,7 @@
 <li>Games not launched for the longest time, with days since last launch</li>
 <li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
 <li>Total playtime and number of games per genre</li>
-<li>Bar charts of the top 10 most played games and hours played by genre (matplotlib)</li>
+<li>Bar charts of the top 10 most played games, hours played by genre and number of games per genre (matplotlib)</li>
 </ul>
 <p>Still planned:</p>
 <ul>
@@ -166,6 +166,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <h3>Version 4 - Extra Features</h3>
 <ul>
 <li>☐ Store data in a local SQLite database</li>
+<li>☐ Filter out non-game apps (software, test servers) using the Store API <code>type</code> field</li>
 <li>☐ Analyze achievements with <code>ISteamUserStats/GetPlayerAchievements</code></li>
 <li>☐ Track playtime changes over time</li>
 </ul>
