@@ -15,11 +15,10 @@
 <li>Games not launched for the longest time, with days since last launch</li>
 <li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
 <li>Total playtime and number of games per genre</li>
-<li>Bar charts of the top 10 most played games, hours played by genre, number of games per genre and share of never launched games per genre (matplotlib)</li>
+<li>Bar charts of the top 10 most played games, hours played by genre, number of games per genre and share of never launched games per genre (matplotlib), plus games per genre in seaborn</li>
 </ul>
 <p>Still planned:</p>
 <ul>
-<li>More charts with matplotlib and seaborn</li>
 <li>Interactive dashboard in Streamlit</li>
 </ul>
 <hr />
@@ -155,7 +154,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 <li>☑ Cache API results to a local file</li>
 <li>☑ Merge genres with library data</li>
 <li>☑ Playtime statistics by genre</li>
-<li>☐ Charts with matplotlib and seaborn</li>
+<li>☑ Charts with matplotlib and seaborn</li>
 </ul>
 <h3>Version 3 - Dashboard</h3>
 <ul>
