@@ -15,7 +15,7 @@
 <li>Games not launched for the longest time, with days since last launch</li>
 <li>Game genres from the Steam Store API, cached in a local JSON file and merged with the library data</li>
 <li>Total playtime and number of games per genre</li>
-<li>Bar charts of the top 10 most played games, hours played by genre and number of games per genre (matplotlib)</li>
+<li>Bar charts of the top 10 most played games, hours played by genre, number of games per genre and share of never launched games per genre (matplotlib)</li>
 </ul>
 <p>Still planned:</p>
 <ul>
@@ -40,7 +40,7 @@
 <ul>
 <li>total playtime per genre</li>
 <li>number of games per genre</li>
-<li>planned: genres with the highest share of unplayed games</li>
+<li>share of never launched games per genre (only genres with at least 5 games, since tiny genres give misleading 0% or 100%)</li>
 </ul>
 <p>A game counts fully in each of its genres (one row per genre after <code>explode</code>), so per-genre hours add up to more than the total playtime. They are meant for comparing genres, not for summing.</p>
 <h3>Dashboard</h3>
