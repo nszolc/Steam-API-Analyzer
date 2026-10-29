@@ -51,6 +51,7 @@
 <li>most played games chart</li>
 <li>playtime by genre chart</li>
 <li>sidebar filters by genre and minimum hours played; all summary metrics and charts follow the filters</li>
+<li>dark purple theme set in <code>.streamlit/config.toml</code>; the matplotlib charts use the same colors through <code>plt.rcParams</code></li>
 </ul>
 <hr />
 <h2>Tech Stack</h2>
@@ -139,9 +140,13 @@ rtime_last_played   - last launch time (Unix timestamp)
 ├── notebooks
 │   └── steam_analysis.ipynb   (data analysis)
 ├── app.py                     (Streamlit dashboard)
+├── .streamlit
+│   └── config.toml            (dashboard theme: dark purple)
 ├── data                       (cached API results, gitignored)
 ├── .env.example               (required environment variables)
 ├── .gitattributes             (nbstripout filter for notebooks)
+├── .vscode
+│   └── settings.json          (Ruff format on save)
 ├── pyproject.toml             (project, dependencies, Ruff and mypy config)
 └── uv.lock                    (locked dependency versions)
 </code></pre>
