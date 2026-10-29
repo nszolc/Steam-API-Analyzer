@@ -17,9 +17,11 @@
 <li>Total playtime and number of games per genre</li>
 <li>Bar charts of the top 10 most played games, hours played by genre, number of games per genre and share of never launched games per genre (matplotlib), plus games per genre in seaborn</li>
 </ul>
+<li>Streamlit dashboard with library summary metrics, the top 10 most played games and hours played by genre, filterable by genre and minimum playtime</li>
+</ul>
 <p>Still planned:</p>
 <ul>
-<li>Interactive dashboard in Streamlit</li>
+<li>Version 4 extras (see the roadmap)</li>
 </ul>
 <hr />
 <h2>Main Features</h2>
@@ -43,12 +45,12 @@
 </ul>
 <p>A game counts fully in each of its genres (one row per genre after <code>explode</code>), so per-genre hours add up to more than the total playtime. They are meant for comparing genres, not for summing.</p>
 <h3>Dashboard</h3>
-<p>Planned Streamlit dashboard with:</p>
+<p>Streamlit dashboard (<code>app.py</code>) that reuses the same <code>steam_api_analyzer</code> functions as the notebook:</p>
 <ul>
-<li>library summary (number of games, total hours, unplayed share)</li>
+<li>library summary (number of games, total hours, never launched games and their share)</li>
 <li>most played games chart</li>
 <li>playtime by genre chart</li>
-<li>filtering by genre and playtime</li>
+<li>sidebar filters by genre and minimum hours played; all summary metrics and charts follow the filters</li>
 </ul>
 <hr />
 <h2>Tech Stack</h2>
@@ -57,7 +59,7 @@
 <li><strong>Data:</strong> pandas, matplotlib, seaborn</li>
 <li><strong>API:</strong> requests, python-dotenv</li>
 <li><strong>Tooling:</strong> uv, Ruff, mypy, nbstripout</li>
-<li><strong>Dashboard:</strong> Streamlit (planned)</li>
+<li><strong>Dashboard:</strong> Streamlit</li>
 </ul>
 <hr />
 <h2>Running Locally</h2>
@@ -83,7 +85,7 @@ STEAM_ID=your_steamid64
 <p>Open the notebook in VS Code (select the <code>.venv</code> kernel), or start Jupyter from the project root:</p>
 <pre><code class="language-bash">uv run jupyter lab
 </code></pre>
-<p>The notebook only handles analysis; the API code lives in the <code>steam_api_analyzer</code> package, so it can be reused later by the dashboard:</p>
+<p>The notebook only handles analysis; the API code lives in the <code>steam_api_analyzer</code> package, so it is reused by the dashboard:</p>
 <pre><code class="language-python">from pathlib import Path
 
 from steam_api_analyzer import get_genres, get_owned_games
@@ -91,9 +93,14 @@ from steam_api_analyzer import get_genres, get_owned_games
 games = get_owned_games()
 genres = get_genres(games["appid"], Path("../data/genres_cache.json"))
 </code></pre>
+<h3>5. Run the dashboard</h3>
+<p>From the project root:</p>
+<pre><code class="language-bash">uv run streamlit run app.py
+</code></pre>
+<p>The page opens in the browser (by default at <code>http://localhost:8501</code>). Streamlit reruns the whole script on every interaction, so loading the games and genres is wrapped in <code>@st.cache_data</code> and only happens once. Stop the server with <code>Ctrl+C</code> in the terminal.</p>
 <p>Two details worth knowing:</p>
 <ul>
-<li><code>load_dotenv()</code> looks for <code>.env</code> starting from the current working directory, so Jupyter should be started from the project root.</li>
+<li><code>load_dotenv()</code> looks for <code>.env</code> starting from the current working directory, so Jupyter and Streamlit should be started from the project root.</li>
 <li>If <em>Game details</em> are private, the API still returns <code>200 OK</code>, but with an empty <code>response</code> object, so <code>fetch_owned_games()</code> checks for a missing <code>games</code> list and raises a clear error instead of failing later.</li>
 <li>The first <code>get_genres()</code> call sends one Store API request per game, which takes a while for a large library. The cache is saved after every request, so an interrupted run resumes where it stopped. Delete <code>data/genres_cache.json</code> to fetch all genres again.</li>
 </ul>
@@ -131,6 +138,7 @@ rtime_last_played   - last launch time (Unix timestamp)
 │       └── api.py             (Steam Web API and Store API client)
 ├── notebooks
 │   └── steam_analysis.ipynb   (data analysis)
+├── app.py                     (Streamlit dashboard)
 ├── data                       (cached API results, gitignored)
 ├── .env.example               (required environment variables)
 ├── .gitattributes             (nbstripout filter for notebooks)
@@ -158,9 +166,9 @@ rtime_last_played   - last launch time (Unix timestamp)
 </ul>
 <h3>Version 3 - Dashboard</h3>
 <ul>
-<li>☐ Build a Streamlit dashboard</li>
-<li>☐ Add filters by genre and playtime</li>
-<li>☐ Add library summary metrics</li>
+<li>☑ Build a Streamlit dashboard</li>
+<li>☑ Add filters by genre and playtime</li>
+<li>☑ Add library summary metrics</li>
 </ul>
 <h3>Version 4 - Extra Features</h3>
 <ul>
