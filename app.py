@@ -17,18 +17,37 @@ def load_games():
 
 st.title("My Steam Library")
 
-games = load_games()
 
-total_hours = games["hours_played"].sum()
-never_launched = len(games[games["playtime_forever"] == 0])
-never_launched_share = never_launched / len(games)
+games = load_games()
+games_exploded = games.explode("genres", ignore_index=True)
+all_genres = sorted(games_exploded["genres"].dropna().unique())
+st.sidebar.header("Filters")
+min_hours = st.sidebar.slider("Minimum hours played", 0, int(games["hours_played"].max()), 0)
+filtered = games[games["hours_played"] >= min_hours]
+selected_genres = st.sidebar.multiselect("Genres", all_genres, all_genres)
+
+if len(selected_genres) < len(all_genres):
+    matching_appids = games_exploded[games_exploded["genres"].isin(selected_genres)][
+        "appid"
+    ].unique()
+    filtered = filtered[filtered["appid"].isin(matching_appids)]
+
+if filtered.empty:
+    st.warning("There is no filtered data to display. Please adjust the filters in the sidebar.")
+    st.stop()
+
+
+total_hours = filtered["hours_played"].sum()
+never_launched = len(filtered[filtered["playtime_forever"] == 0])
+never_launched_share = never_launched / len(filtered)
+
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Games", len(games))
+col1.metric("Games", len(filtered))
 col2.metric("Total Hours Played", f"{total_hours:.0f} h")
 col3.metric("Never Launched", f"{never_launched} ({never_launched_share:.0%})")
 
-top10 = games.sort_values("hours_played", ascending=False).head(10)
+top10 = filtered.sort_values("hours_played", ascending=False).head(10)
 
 st.subheader("Most Played Games")
 fig, ax = plt.subplots()
@@ -40,8 +59,8 @@ ax.bar_label(ax.containers[0], fmt="%.1f", padding=3)
 fig.tight_layout()
 st.pyplot(fig)
 
-games_exploded = games.explode("genres", ignore_index=True)
-genre_hours = games_exploded.groupby("genres")["hours_played"].sum().sort_values(ascending=False)
+filtered_exploded = filtered.explode("genres", ignore_index=True)
+genre_hours = filtered_exploded.groupby("genres")["hours_played"].sum().sort_values(ascending=False)
 
 st.subheader("Hours Played by Genre (a game counts in each of its genres)")
 fig, ax = plt.subplots()
